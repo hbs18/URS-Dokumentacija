@@ -51,5 +51,42 @@ Naredba `busctl` pokazuje koji procesi trenutno aktivno komuniciraju međusobno.
 `org.freedesktom.DBus`
 
 ```
-Dodatak: naredba `stat` služi za ispis informacijskog čvora datoteke
+Dodatak: naredba stat (datoteka) služi za ispis informacijskog čvora datoteke
 ```
+
+`busctl` koristimo kad provjeravamo rade li sabirnice kako trebaju, komuniciraju li međusobno... Koristi se uglavnom za debugging.
+
+### coredumpctl
+
+Služi za pregled core dumpova. Oni se generiraju kad se programi crashaju i u njima su informacije o crashu. Umjesto da pregledavamo stranice i stranice logova, pogledamo samo core dump ovim alatom.
+
+To radi tako da je uvijek aktivan socket u kojeg programi mogu javiti kada su crashali.
+
+###  hostnamectl
+
+Pita `hostnamed` za informacije kao OS, HW vendor... i daje informacije o računalu.
+
+Ispis statusa: 
+
+```shell
+[root@archlinux ~]# hostnamectl status
+ Static hostname: archlinux
+       Icon name: computer-vm
+         Chassis: vm 🖴
+(...)
+```
+
+Postavljanje vrijednosti:
+
+```shell
+[root@archlinux ~]# hostnamectl icon-name computer
+```
+
+Dohvaćanje vrijednost:
+
+```shell
+[root@archlinux ~]# hostnamectl icon-name
+computer
+```
+
+Kada postavljamo vrijednosti kao što su `chassis`, možemo postaviti samo određene tipove. Vrstu tipa koja se može staviti možemo viditi u man pageu.
