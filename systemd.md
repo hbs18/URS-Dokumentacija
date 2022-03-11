@@ -90,3 +90,64 @@ computer
 ```
 
 Kada postavljamo vrijednosti kao što su `chassis`, možemo postaviti samo određene tipove. Vrstu tipa koja se može staviti možemo viditi u man pageu.
+
+`deployment` je u kojoj je produkcijskoj okolini računalo. Po defaulti nije postavljeno. Primjerice, može biti `production`, `staging`, `development`...
+
+`location` se može koristiti kako bi definirali fizičku lokaciju računala. 
+
+### journalctl
+
+Za sad ništa...
+
+### localectl
+
+Za upravljanje localeom na računalu.  
+
+```shell
+[root@archlinux ~]# localectl
+   System Locale: LANG=en_US.UTF-8
+       VC Keymap: us
+      X11 Layout: n/a
+```
+
+Napomena: nano se na archu instalira `[root@archlinux ~]# pacman -S nano`
+
+Da dodamo novi locale, u `locale.gen` dodajemo novi locale prvo.
+
+```shell
+[root@archlinux ~]# nano /etc/locale.gen
+```
+
+```
+# Created by cloud-init v. 22.1 on Fri, 11 Mar 2022 14:24:47 +0000
+en_US.UTF-8 UTF-8
+hr_HR.UFT-8 UTF-8   <-- ovo smo dodali
+```
+
+Nakon toga pokrenemo naredbu `locale-gen` da generiramo localeove koje smo dodali.
+
+```shell
+[root@archlinux ~]# locale-gen
+Generating locales...
+  en_US.UTF-8... done
+  hr_HR.UTF-8... done
+Generation complete.
+```
+
+Novi locale postavljamo naredbom (i provjeravamo):
+
+```shell
+[root@archlinux ~]# localectl set-locale hr_HR.UTF-8
+[root@archlinux ~]# localectl
+   System Locale: LANG=hr_HR.UTF-8
+       VC Keymap: us
+      X11 Layout: n/a
+```
+
+Locale možemo također i podesiti alatom `cloud-init`.
+
+
+
+
+
+
