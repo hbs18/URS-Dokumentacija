@@ -146,68 +146,63 @@ Novi locale postavljamo naredbom (i provjeravamo):
 
 Locale možemo također i podesiti alatom `cloud-init`.
 
-### loginctl
+### oomctl
+
+Alat za upravljanje OOM killera (proces koji traži procese koji koriste previše memorije i ubija ga kako bi ostatak mašine radio normalno).
 
 ```shell
-[root@archlinux ~]# loginctl
-SESSION UID USER SEAT TTY
-      3    0 root       
-      5 1000 fidit      pts/1    
-
-1 sessions listed.
+[root@archlinux ~]# oomctl
+Dry Run: no
+Swap Used Limit: 90.00%
+Default Memory Pressure Limit: 60.00%
+Default Memory Pressure Duration: 30s
+System Context:
+        Memory: Used: 264.0M Total: 466.8M
+        Swap: Used: 0B Total: 511.9M
+Swap Monitored CGroups:
+Memory Pressure Monitored CGroups:
 ```
 
-`SEAT` se koristi za multi-seat sustave (gdje na jedan kompjuter ima npr. 4 monitora, tipkovnica, miševa, sjedalica). Takvi sustavi se jako rjetko u praksi koriste.
+Konfigurira se preko config datoteka, ne preko naredbi.
 
-`TTY` je terminal računala. Koristi se naziv TTY jer linux emulira stare teletypewritere. 
+### resolvectl
 
-`pts` je pseudo terminal session. Za remote korisnika, kad se on prijavi dobije pseudoterminal. 
-
-`kill-user` je za odjaviti korisnika. 
+Upravljanje lokalnog systemdovog lokalnog DNS servera. 
 
 ```shell
-[root@archlinux ~]# loginctl kill-user fidit
+root@archlinux ~]# systemctl status systemd-resolved.service
+● systemd-resolved.service - Network Name Resolution
+     Loaded: loaded (/usr/lib/systemd/system/systemd-resolved.service; enabled; vendor preset: enabled)
+     Active: active (running) since Fri 2022-03-11 14:31:41 UTC; 1h 38min ago
+       Docs: man:systemd-resolved.service(8)
+             man:org.freedesktop.resolve1(5)
 ```
 
-`linger` opcije se koriste za proces lingering. To je kada se ne ubijaju procesi nakon što se korisnik odjavi. Primjerice, ako korisnik ima backup proces i odjavi se prije nego što proces bude gotov, lingering omogućava da se backup izvrši nakon što korisnik bude log outan.
+### userdbcontrol
 
-### machinectl
+Popis korisnika. Dodavanje, brisanje...
 
-"systemdov docker".
+### timedatectl
 
-### networkctl
+Upravljanje datumom i vremenom. 
 
-Za informacije o mrežnim karticama instaliranim u uređaj.
+Za popis time zona:
 
 ```shell
-[root@archlinux ~]# networkctl
-IDX LINK TYPE     OPERATIONAL SETUP     
-  1 lo   loopback carrier     unmanaged
-  2 eth0 ether    routable    configured
-
-2 links listed.
+[root@archlinux ~]# timedatectl list-timezones
+Africa/Abidjan
+Africa/Accra
+Africa/Addis_Ababa
+Africa/Algiers
+Africa/Asmara
+Africa/Asmera
+Africa/Bamako
 ```
 
-Za više informacija o određenoj mrežnoj kartici možemo iskoristiti naredbu:
+Postavljanje na vremensku zonu:
 
 ```shell
-[root@archlinux ~]# networkctl status eth0
-● 2: eth0                                                                                 
-                     Link File: /run/systemd/network/10-netplan-eth0.link
-                  Network File: /run/systemd/network/10-netplan-eth0.network
-                          Type: ether
-                         State: routable (configured)
-                  Online state: online                                                    
-                          Path: pci-0000:00:03.0
-                        Driver: e1000
-                        Vendor: Intel Corporation
-                         Model: 82540EM Gigabit Ethernet Controller (QEMU Virtual Machine)
-              Hardware Address: 52:54:00:12:34:56
-              (...)
-```
-
-```
-Napomena: qemu sam po sebi ne mjenja DHCP (IP adresu, MAC...) kada pokrećemo VM preko naredbenog retka
+[root@archlinux ~]# timedatectl set-timezone Europe/Zagreb
 ```
 
 
