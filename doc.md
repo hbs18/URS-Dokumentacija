@@ -1,8 +1,8 @@
-# Arch linux i cloud init
+# Arch Linux i cloud-init
 
 #### 11.03.2022
 
-Preuzmi Arch linux qcow2 image sa stranice https://gitlab.archlinux.org/archlinux/arch-boxes/-/jobs/50048/artifacts/file/output/Arch-Linux-x86_64-cloudimg-20220310.50048.qcow2 i napravi kopiju.
+Preuzmi Arch Linux qcow2 image sa stranice https://gitlab.archlinux.org/archlinux/arch-boxes/-/jobs/50048/artifacts/file/output/Arch-Linux-x86_64-cloudimg-20220310.50048.qcow2 i napravi kopiju.
 
 ```shell
 korisnik@ODJ-O365-118:~/Preuzimanja$ qemu-system-x86_64 -m 512M mojArch.qcow2
@@ -16,7 +16,7 @@ Podsjetnik: image se resizea sa
 korisnik@ODJ-O365-118:~/Preuzimanja$ qemu-img resize mojArch.qcow2 +10G
 ```
 
-Kreiraj meta-data i user-data fileove u diru gdje je qcow2 slika. U user-data:
+Kreiraj meta-data i user-data fileove u diru gdje je qcow2 slika. U `user-data`:
 
 ```
 #cloud-config
@@ -24,6 +24,10 @@ users:
   - name: fidit
     ssh_authorized_keys:
       - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLsUoyamyIUdMhZ9iwuDfCpzoMOX6FlPXJhV>
+```
+
+```
+Danger: user-data mora imat prazni newline na kraju dokumenta.
 ```
 
 `meta-data` ostaviti prazno. 
@@ -34,7 +38,7 @@ SSH ključevi generiraju se
 korisnik@ODJ-O365-118:~$ ssh-keygen -t ecdsa
 ```
 
-U user-data ide linija koja se dobiva sa:
+U `user-data` ide linija koja se dobiva sa:
 
 ```shell
 korisnik@ODJ-O365-118:~$ cat .ssh/id_ecdsa.pub 
@@ -60,7 +64,7 @@ Written to medium : 184 sectors at LBA 0
 Writing to 'stdio:cloud-init.iso' completed successfully.
 ```
 
-Pokrećemo VM sa networkingom i cdromom naredbom:
+Pokrećemo VM sa networkingom i `cloud-init.iso` datotekom učitanom u virtualnom CD-ROMu naredbom:
 
 ```shell
 korisnik@ODJ-O365-118:~/Preuzimanja$ qemu-system-x86_64 -m 512M mojArch.qcow2 -cdrom cloud-init.iso -nic user,hostfwd=tcp::60022-:22
