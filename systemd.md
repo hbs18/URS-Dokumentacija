@@ -146,8 +146,68 @@ Novi locale postavljamo naredbom (i provjeravamo):
 
 Locale možemo također i podesiti alatom `cloud-init`.
 
+### loginctl
 
+```shell
+[root@archlinux ~]# loginctl
+SESSION UID USER SEAT TTY
+      3    0 root       
+      5 1000 fidit      pts/1    
 
+1 sessions listed.
+```
 
+`SEAT` se koristi za multi-seat sustave (gdje na jedan kompjuter ima npr. 4 monitora, tipkovnica, miševa, sjedalica). Takvi sustavi se jako rjetko u praksi koriste.
+
+`TTY` je terminal računala. Koristi se naziv TTY jer linux emulira stare teletypewritere. 
+
+`pts` je pseudo terminal session. Za remote korisnika, kad se on prijavi dobije pseudoterminal. 
+
+`kill-user` je za odjaviti korisnika. 
+
+```shell
+[root@archlinux ~]# loginctl kill-user fidit
+```
+
+`linger` opcije se koriste za proces lingering. To je kada se ne ubijaju procesi nakon što se korisnik odjavi. Primjerice, ako korisnik ima backup proces i odjavi se prije nego što proces bude gotov, lingering omogućava da se backup izvrši nakon što korisnik bude log outan.
+
+### machinectl
+
+"systemdov docker".
+
+### networkctl
+
+Za informacije o mrežnim karticama instaliranim u uređaj.
+
+```shell
+[root@archlinux ~]# networkctl
+IDX LINK TYPE     OPERATIONAL SETUP     
+  1 lo   loopback carrier     unmanaged
+  2 eth0 ether    routable    configured
+
+2 links listed.
+```
+
+Za više informacija o određenoj mrežnoj kartici možemo iskoristiti naredbu:
+
+```shell
+[root@archlinux ~]# networkctl status eth0
+● 2: eth0                                                                                 
+                     Link File: /run/systemd/network/10-netplan-eth0.link
+                  Network File: /run/systemd/network/10-netplan-eth0.network
+                          Type: ether
+                         State: routable (configured)
+                  Online state: online                                                    
+                          Path: pci-0000:00:03.0
+                        Driver: e1000
+                        Vendor: Intel Corporation
+                         Model: 82540EM Gigabit Ethernet Controller (QEMU Virtual Machine)
+              Hardware Address: 52:54:00:12:34:56
+              (...)
+```
+
+```
+Napomena: qemu sam po sebi ne mjenja DHCP (IP adresu, MAC...) kada pokrećemo VM preko naredbenog retka
+```
 
 
