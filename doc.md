@@ -103,3 +103,11 @@ znaći da se mašina na istom portu promjenila od zadnji put kad smo se spajali 
 U mom slučaju, to se dogodilo jer sam prije imao VM (kojeg sam izbrisao i pokrenuo novi) na istoj adresi i portu.
 
 To možemo popravit tako da samo izvedemo naredbu koja piše u error poruci.
+
+Kod archa, umjesto `apt` koristi se `pacman`.
+
+Ekvivalent `apt upgrade` je:
+
+```shell
+[root@archlinux ~]# pacman -Syu
+```
