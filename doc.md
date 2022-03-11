@@ -96,8 +96,6 @@ Host key verification failed.
 
 znaći da se mašina na istom portu promjenila od zadnji put kad smo se spajali na tu adresu i port i ssh misli da se mašina zamjenila, te da se izvodi potencijalni MITM napad.
 
+U mom slučaju, to se dogodilo jer sam prije imao VM (kojeg sam izbrisao i pokrenuo novi) na istoj adresi i portu.
+
 To možemo popravit tako da samo izvedemo naredbu koja piše u error poruci.
-
-
-
-
