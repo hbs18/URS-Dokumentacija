@@ -212,6 +212,58 @@ U datoteku ubacimo:
 Važno: ansible podržava samo ssh preko ključa, ne preko lozinki!
 ```
 
+Na VM1 generiramo ssh key:
+
+```shell
+[fidit@archlinux ~]$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/fidit/.ssh/id_rsa): 
+(...)
+```
+
+Nakon što se izgeneriralo, ovo:
+
+```shell
+[fidit@archlinux ~]$ cat .ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9mHUts+D5nXdvR7P1kXiEr4O4q4c66vFpGd3Lr9gsy9tZzKczq8sz3eKOdd/s/MKDmUE7ZLAVoA2s5menNXhtryfgnMtWn1rlqlC6oCFTqsSiC425rrMMdNnY8ghx7xH8+NlyZOFS/qRZpqdC7MC4N4nl/yvS4NFEiVCgS7ffbLcCdsDIXnni/eiVmVHP1GZkmxMOhvDHNrjt0ud0/B/EdIpmiSw01yb1w3uEjYpVKXAXEA5LBTXZidpkuaxdodCTSZIXN7kM1+SJQC8G7YwLS2eA04mGsOzHl3aMIWuL7Nd/czwbjRpWyOl/O59edBBhxvXPiryP28oIMHQE5nY0CzxllXoacUl+RHeeor4M0noeE5Qbd4GJIcizMwO7DBaNtxD8R0ewPXgIZrbe/O1diJzbmZJBl5/1dOL/9PWhzNNSjkZGj66WTvhdVS6KG/+GhIyo59zoVz2ChT6caxZFiGrar9DPLwgUDwkslg61AEnNGKBBHRkgPdmL5bCvkas= fidit@archlinux
+```
+
+zaljepimo u `.ssh/authorized_keys` na oba VMa.
+
+Sada će ansible ping raditi:
+
+```shell
+[fidit@archlinux ~]$ ansible all -m ping
+The authenticity of host '192.168.122.227 (192.168.122.227)' can't be established.
+ED25519 key fingerprint is SHA256:7QjN4cVwduJUV06OI6mbbsnrjH7/Bun5FPXvImvXB94.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? [WARNING]: Platform linux on host 192.168.122.152 is using the discovered Python interpreter at
+/usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of
+that path. See https://docs.ansible.com/ansible-core/2.12/reference_appendices/interpreter_discovery.html
+for more information.
+192.168.122.152 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.10"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+yes
+[WARNING]: Platform linux on host 192.168.122.227 is using the discovered Python interpreter at
+/usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of
+that path. See https://docs.ansible.com/ansible-core/2.12/reference_appendices/interpreter_discovery.html
+for more information.
+192.168.122.227 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.10"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+Važno: treba dva put mu dat `yes`.
+
 
 
 
