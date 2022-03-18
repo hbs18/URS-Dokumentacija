@@ -184,7 +184,16 @@ U novom VS Codeu (gdje u remote kutu piše adresa na koju smo spojeni) koji se o
 Sadržaj datoteke playbook.yml:
 
 ```
-
+---
+- name: All hosts up-to-date
+  hosts: ja ostali
+  become: yes
+  
+  tasks:
+    - name: full system upgrade
+      pacman:
+        update_cache: yes
+        upgrade: yes
 ```
 
 Instaliramo nano:
@@ -264,8 +273,52 @@ for more information.
 
 Važno: treba dva put mu dat `yes`.
 
+Playbook izvodimo naredbom:
 
+```shell
+[fidit@archlinux ~]$ ansible-playbook playbook.yml 
 
+PLAY [All hosts up-to-date] *******************************************************************************
 
+TASK [Gathering Facts] ************************************************************************************
+[WARNING]: Platform linux on host 192.168.122.227 is using the discovered Python interpreter at
+/usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of
+that path. See https://docs.ansible.com/ansible-core/2.12/reference_appendices/interpreter_discovery.html
+for more information.
+ok: [192.168.122.227]
+[WARNING]: Platform linux on host 192.168.122.152 is using the discovered Python interpreter at
+/usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of
+that path. See https://docs.ansible.com/ansible-core/2.12/reference_appendices/interpreter_discovery.html
+for more information.
+ok: [192.168.122.152]
 
+TASK [full system upgrade] ********************************************************************************
+ok: [192.168.122.152]
+ok: [192.168.122.227]
 
+PLAY RECAP ************************************************************************************************
+192.168.122.152            : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.122.227            : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+```
+
+Više o Ansible playbooks na https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+
+Primjer playbooka koji instalira apache na grupu ostali i osigura da je apache pokrenut:
+
+```
+---
+- name: Install apache
+  hosts: ostali
+  become: yes
+  
+  tasks:
+    - name: install apache
+      pacman:
+        name: apache
+        state: present
+    - name: ensure apache is running
+      ansible.builtin.service:
+        name: httpd
+        state: started
+```
