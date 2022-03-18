@@ -108,3 +108,22 @@ Folderu ftp i fileovima unutar njega od group i o mičemo prava read i execute:
 ```shell
 [fidit@archlinux ~]$ sudo chmod -R go-rx ftp/
 ```
+
+## Grupe
+
+Pristup grafičkoj kartici imaju user `root` i grupa `video`:
+
+```shell
+[fidit@archlinux ~]$ ls -la /dev/dri/card0
+crw-rw----+ 1 root video 226, 0 Mar 18 13:58 /dev/dri/card0
+```
+
+Ako dodamo korisnika `fidit` u grupu `video`, on će imati pristup grafičkoj kartici:
+
+```shell
+[fidit@archlinux ~]$ sudo usermod -aG video fidit
+[fidit@archlinux ~]$ grep video /etc/group
+video:x:985:fidit
+```
+
+Dodatno: pristup disku i pristup datotečnom sustavu nije isto.
