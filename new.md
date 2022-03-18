@@ -42,3 +42,49 @@ users:
 
 Obrisali smo virtualnu mašinu i ponovili postupak uspostave VMa.
 
+Ni to nije radilo pa smo postavili user-data na:
+
+
+```
+#cloud-config
+users:
+  - default
+system_info:
+  default_user:
+    name: fidit
+    plain_text_passwd: 'asdf1234'
+    gecos: arch Cloud User
+    groups: [wheel, adm]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+
+```
+
+`sudo: ["ALL=(ALL) NOPASSWD:ALL"]` omogućuje da korisnik postane korijenski korisnik bez lozinke (?)
+
+Ni to nije radilo, trebalo je dodat liniju;
+
+```
+#cloud-config
+users:
+  - default
+system_info:
+  default_user:
+    name: fidit
+    lock_passwd: False
+    plain_text_passwd: 'asdf1234'
+    gecos: arch Cloud User
+    groups: [wheel, adm]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+```
+
+Kad radimo lokalni login, `lock_passwd: False` je potreban. Sada radi login.
+
+Kada je cloud-init uspješan i gotov sa svojim radom, dobit ćemo ovakav output (nakon par minuta):
+
+<img src="Slika zaslona s 2022-03-18 14-38-46.png"></img>
+
+Tada možemo login napravit (lozinka će proraditi).
+
+
