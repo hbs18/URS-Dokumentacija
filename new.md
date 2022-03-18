@@ -126,4 +126,34 @@ Ako dodamo korisnika `fidit` u grupu `video`, on će imati pristup grafičkoj ka
 video:x:985:fidit
 ```
 
-Dodatno: pristup disku i pristup datotečnom sustavu nije isto.
+Dodatno: pristup disku i pristup datotečnom sustavu nije isto. Pristup datot. sustavu imamo stalno, a za pristup disku moramo se dodati u grupu `disk`.
+
+Naredbom `useradd` dodajemo korisnika:
+
+```shell
+[fidit@archlinux ~]$ sudo useradd korisnik -c "Obicni korisnik" -s /bin/bash -m
+```
+
+Lozinku dodajemo alatom `passwd`:
+
+```shell
+[fidit@archlinux ~]$ sudo passwd korisnik
+New password: 
+Retype new password: 
+passwd: password updated successfully
+```
+
+Korisnik je sada dodan:
+
+```shell
+[fidit@archlinux ~]$ sudo grep korisnik /etc/shadow
+korisnik:$6$Lx25pABYyUX8pY1s$hyduQkAuWV0nSWxtTrhlpLGRXprblCVswg79RXb98TFj.WKIkKyHYhbm2UNfvuxJcy3jp6Ihe6I4cJWY8iVJj.:19069:0:99999:7:::
+```
+
+Naredbom `usermod` uređujemo postoječeg korisnika. 
+
+```shell
+[fidit@archlinux ~]$ sudo usermod -s /bin/false korisnik
+```
+
+Postavkom ljuske na `/bin/false` za nekog korisnika onemogučujemo mu pristup shellu.
