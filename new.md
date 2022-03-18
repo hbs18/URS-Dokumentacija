@@ -87,4 +87,24 @@ Kada je cloud-init uspješan i gotov sa svojim radom, dobit ćemo ovakav output 
 
 Tada možemo login napravit (lozinka će proraditi).
 
+U `ps aux` kada imamo user `systemd+`, + znaci da cjelo ime usera nije stalo.
 
+## Userdbctl
+
+Popis korisnika.
+
+Postoje korisnici za dbus, http, ftp, mail... kako bi se moglo svakome od njih dati što manje ovlasti, to jest da ne bi zloupotrebljavali svoje ovlasti.
+
+## Prava
+
+```shell
+[fidit@archlinux ~]$ sudo chown http datoteka
+```
+
+Datoteka `datoteka` je dobila vlasnika korisnika `http`.
+
+Folderu ftp i fileovima unutar njega od group i o mičemo prava read i execute:
+
+```shell
+[fidit@archlinux ~]$ sudo chmod -R go-rx ftp/
+```
