@@ -177,5 +177,43 @@ Na Ubuntu hostu, u VS Codeu se spajamo na Arch VM 1, na kojem je pokrenut Ansibl
 
 Podižemo još jedan Arch VM (na Ubuntu hostu, u Virt-manageru). Cloud init .iso file možemo kopirati, i on se ne mjenja (read-only je). qcow2 fileovi su read write, znaći mjenjaju se.
 
+U VS Codeu kliknemu na zeleni remote gumb u donjem ljevom kutu i spojimo se na ssh od VM 1 (npr. `fidit@192.168.122.157`).
+
+U novom VS Codeu (gdje u remote kutu piše adresa na koju smo spojeni) koji se otvorio napravimo novi file i odaberemo tip YAML. Nazovemo ga `playbook.yml`.
+
+Sadržaj datoteke playbook.yml:
+
+```
+
+```
+
+Instaliramo nano:
+```shell
+[fidit@archlinux ~]$ sudo pacman -S nano
+```
+
+Kako bi ansible vidio ostale hostove, kreiramo datoteku:
+
+```shell
+[fidit@archlinux ~]$ sudo touch /etc/ansible/hosts
+```
+
+U datoteku ubacimo:
+
+```
+[ja]
+192.168.122.152
+
+[ostali]
+192.168.122.227
+```
+
+```
+Važno: ansible podržava samo ssh preko ključa, ne preko lozinki!
+```
+
+
+
+
 
 
