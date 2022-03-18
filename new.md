@@ -174,3 +174,8 @@ looking for conflicting packages...
 U VS Codeu pišemo Ansible skripte. Instaliramo ekstenziju Remote Development. 
 
 Na Ubuntu hostu, u VS Codeu se spajamo na Arch VM 1, na kojem je pokrenut Ansible i pomoću Ansiblea na VM 1 upravljamo VMom 2.
+
+Podižemo još jedan Arch VM (na Ubuntu hostu, u Virt-manageru). Cloud init .iso file možemo kopirati, i on se ne mjenja (read-only je). qcow2 fileovi su read write, znaći mjenjaju se.
+
+
+
