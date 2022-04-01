@@ -261,3 +261,59 @@ ZFS nam trenutno ne radi, moramo imat instalirane linux headers. (https://wiki.a
 
 Trebamo pricekat dulje jer ponovo kompajlira zfs da ispravi mane koje su nastale kad smo ga instalirali bez headera. 
 
+<hr>
+
+Da bi radili sa zfsom, prvo ga moramo ucitati:
+
+```shell
+[fidit@archlinux ~]$ sudo modprobe zfs
+```
+
+zpool niski nivo, zfs visoki nivo
+
+```shell
+[fidit@archlinux ~]$ sudo fdisk /dev/vde
+
+Welcome to fdisk (util-linux 2.38).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0x5a6de21c.
+
+Command (m for help): g
+Created a new GPT disklabel (GUID: D7631690-4538-384F-87C7-4D057B0E55F1).
+
+Command (m for help): n
+Partition number (1-128, default 1): 
+First sector (2048-2097118, default 2048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-2097118, default 2095103): 
+
+Created a new partition 1 of type 'Linux filesystem' and of size 1022 MiB.
+
+Command (m for help): T
+T: unknown command
+
+Command (m for help): t
+
+Selected partition 1
+Partition type or alias (type L to list all): L
+  1 EFI System                     C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+  2 MBR partition scheme           024DEE41-33E7-11D3-9D69-0008C781F39F
+  3 Intel Fast Flash               D3BFE2DE-3DAF-11DF-BA40-E3A556D89593
+(...)
+156 Solaris root                   6A85CF4D-1DD2-11B2-99A6-080020736631
+157 Solaris /usr & Apple ZFS       6A898CC3-1DD2-11B2-99A6-080020736631
+158 Solaris swap                   6A87C46F-1DD2-11B2-99A6-080020736631
+159 Solaris backup                 6A8B642B-1DD2-11B2-99A6-080020736631
+
+sa q izlazimo iz liste
+
+Partition type or alias (type L to list all): 157
+Changed type of partition 'Linux filesystem' to 'Solaris /usr & Apple ZFS'.
+
+onda napisemo w da zapise
+
+mozemo d da izbrisemo sve sa diska
+```
+
