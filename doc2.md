@@ -481,5 +481,20 @@ Resilver je selektivan, scrub je temeljit.
 
 miletic.net/urs1.pdf
 
+5 - VM kad nam treba okolina i kad ne deployamo nesto sto je inace u docker containerima. 
+
+6 - hardver, storage, mrezna oprema, softver za upravljanje oblakom(npr kreiranje VMa, kao na aws gdje korisnici imaju svoje sucelje i rade vm od doma)
+
+8 - infrastruktura kao usluga (kad unajmimo VM negdje), platforma kao usluga (heroku)
+
+9 - user, grupa, ostali
+
+10 - "od pokretanja servisa jedan sat. ako se restarta, timer ide ispocetka"
+
+11 - korisnik 0 je root, ovi moduli ispod su biblioteke koje program koristi
+
+12 - ne, pise unmanaged. onda time upravlja network manager (to mi ne znamo iz slike ali samo FYI)
+
+
 
 
