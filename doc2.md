@@ -246,8 +246,12 @@ loading packages...
 resolving dependencies...
 ```
 
+Za upravljanje ZFS volumenima su `zfs` i `zfs pool`. 
 
+```shell
+[fidit@archlinux ~]$ sudo modprobe zfs
+modprobe: FATAL: Module zfs not found in directory /lib/modules/5.17.1-arch1-1
+```
 
-
-
+ZFS nam trenutno ne radi, moramo imat instalirane linux headers. (https://wiki.archlinux.org/title/Dynamic_Kernel_Module_Support)
 
