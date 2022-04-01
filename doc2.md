@@ -317,3 +317,105 @@ onda napisemo w da zapise
 mozemo d da izbrisemo sve sa diska
 ```
 
+Napravimo zpool:
+
+```shell
+[fidit@archlinux ~]$ sudo zpool create mojbazen /dev/vdb1
+[fidit@archlinux ~]$ zpool list
+NAME       SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+mojbazen   960M   120K   960M        -         -     0%     0%  1.00x    ONLINE  -
+```
+
+Za brisanje poola:
+
+```shell
+[fidit@archlinux ~]$ sudo zpool destroy mojbazen
+[fidit@archlinux ~]$ zpool list
+no pools available
+```
+
+Mirroranje:
+
+```shell
+[fidit@archlinux ~]$ sudo zpool create -m /mojbazen mojbazen mirror /dev/vdb1 /dev/vdc1
+[fidit@archlinux ~]$ zpool list
+NAME       SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+mojbazen   960M   120K   960M        -         -     0%     0%  1.00x    ONLINE  -
+[fidit@archlinux ~]$ ls /mojbazen
+[fidit@archlinux ~]$ mount | grep baz
+mojbazen on /mojbazen type zfs (rw,xattr,noacl)
+```
+
+Dodavanje datoteka:
+
+```shell
+[fidit@archlinux ~]$ cd /mojbazen/
+[fidit@archlinux mojbazen]$ sudo mkdir mojdirektorij
+[fidit@archlinux mojbazen]$ sudo touch mojadatoteka
+[fidit@archlinux mojbazen]$ ls .la
+ls: cannot access '.la': No such file or directory
+[fidit@archlinux mojbazen]$ ls -la
+total 18
+drwxr-xr-x 3 root root   4 Apr  1 14:17 .
+drwxr-xr-x 1 root root 146 Apr  1 14:15 ..
+-rw-r--r-- 1 root root   0 Apr  1 14:17 mojadatoteka
+drwxr-xr-x 2 root root   2 Apr  1 14:17 mojdirektorij
+[fidit@archlinux mojbazen]$ sudo chown fidit:fidit mojadatoteka
+```
+
+Detachanje diska iz poola:
+
+```shell
+[fidit@archlinux mojbazen]$ zpool status
+  pool: mojbazen
+ state: ONLINE
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	mojbazen    ONLINE       0     0     0
+	  mirror-0  ONLINE       0     0     0
+	    vdb1    ONLINE       0     0     0
+	    vdc1    ONLINE       0     0     0
+
+errors: No known data errors
+[fidit@archlinux mojbazen]$ sudo zpool detach mojbazen vdb1
+[fidit@archlinux mojbazen]$ zpool status
+  pool: mojbazen
+ state: ONLINE
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	mojbazen    ONLINE       0     0     0
+	  vdc1      ONLINE       0     0     0
+
+errors: No known data errors
+```
+
+RAID 0:
+
+```shell
+[fidit@archlinux mojbazen]$ sudo zpool add mojbazen /dev/vdb1
+[fidit@archlinux mojbazen]$ sudo zpool add mojbazen /dev/vde1
+[fidit@archlinux mojbazen]$ zpool status
+  pool: mojbazen
+ state: ONLINE
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	mojbazen    ONLINE       0     0     0
+	  vdc1      ONLINE       0     0     0
+	  vdd1      ONLINE       0     0     0
+	  vdb1      ONLINE       0     0     0
+	  vde1      ONLINE       0     0     0
+
+errors: No known data errors
+
+[fidit@archlinux mojbazen]$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+(...)
+mojbazen        3.7G  128K  3.7G   1% /mojbazen
+```
+
+U RAIDu 0 `mojbazen` sada ima 3.7GB prostora. 
+
+
