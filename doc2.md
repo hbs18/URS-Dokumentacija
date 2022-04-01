@@ -418,4 +418,24 @@ mojbazen        3.7G  128K  3.7G   1% /mojbazen
 
 U RAIDu 0 `mojbazen` sada ima 3.7GB prostora. 
 
+RAID Z:
+
+```shell
+[fidit@archlinux ~]$ sudo zpool create -m /mojbazen mojbazen raidz /dev/vdb1 /dev/vdc1 /dev/vdd1 /dev/vde1
+[fidit@archlinux ~]$ zpool status
+  pool: mojbazen
+ state: ONLINE
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	mojbazen    ONLINE       0     0     0
+	  raidz1-0  ONLINE       0     0     0
+	    vdb1    ONLINE       0     0     0
+	    vdc1    ONLINE       0     0     0
+	    vdd1    ONLINE       0     0     0
+	    vde1    ONLINE       0     0     0
+
+errors: No known data errors
+```
+
 
