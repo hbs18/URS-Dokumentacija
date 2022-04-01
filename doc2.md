@@ -463,3 +463,23 @@ mojbazen  compressratio  1.00x  -
 NAME      PROPERTY     VALUE           SOURCE
 mojbazen  compression  zstd            local
 ```
+
+Resilvering - ZFS cita sve podatke sa svih uredaja i uvjerava se da se oni mogu ispravno procitati.
+
+```shell
+[fidit@archlinux ~]$ sudo zpool resilver mojbazen
+```
+
+```shell
+[fidit@archlinux ~]$ sudo zpool scrub mojbazen
+```
+
+Resilver je selektivan, scrub je temeljit.
+
+
+# Kolokvij
+
+miletic.net/urs1.pdf
+
+
+
