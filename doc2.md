@@ -438,4 +438,12 @@ config:
 errors: No known data errors
 ```
 
+Sa attach dodajemo driveove u RAID mirror. 
+
+```shell
+sudo zpool attach mojbazen /dev/vdc1 /dev/vdd1
+```
+
+Prvo odredimo jedan disk u poolu, onda odredimo kojeg diska dodajemo u pool. 
+
 
