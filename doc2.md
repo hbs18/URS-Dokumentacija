@@ -255,3 +255,9 @@ modprobe: FATAL: Module zfs not found in directory /lib/modules/5.17.1-arch1-1
 
 ZFS nam trenutno ne radi, moramo imat instalirane linux headers. (https://wiki.archlinux.org/title/Dynamic_Kernel_Module_Support)
 
+```shell
+[fidit@archlinux ~]$ sudo pacman -S linux-headers
+```
+
+Trebamo pricekat dulje jer ponovo kompajlira zfs da ispravi mane koje su nastale kad smo ga instalirali bez headera. 
+
