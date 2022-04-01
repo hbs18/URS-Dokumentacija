@@ -446,4 +446,20 @@ sudo zpool attach mojbazen /dev/vdc1 /dev/vdd1
 
 Prvo odredimo jedan disk u poolu, onda odredimo kojeg diska dodajemo u pool. 
 
+Postavljanje i dobivanje vrijednosti:
 
+```shell
+[fidit@archlinux ~]$ zfs get compression
+NAME      PROPERTY     VALUE           SOURCE
+mojbazen  compression  off             default
+[fidit@archlinux ~]$ zfs get compressratio
+NAME      PROPERTY       VALUE  SOURCE
+mojbazen  compressratio  1.00x  -
+```
+
+```shell
+[fidit@archlinux ~]$ sudo zfs set compression=zstd mojbazen
+[fidit@archlinux ~]$ zfs get compression
+NAME      PROPERTY     VALUE           SOURCE
+mojbazen  compression  zstd            local
+```
