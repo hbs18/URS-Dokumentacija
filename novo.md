@@ -161,3 +161,16 @@ graphical.target @1min 5.569s
 
 ### Jezgra OS-a
 
+```shell
+pacman -S linux-lts
+```
+
+U `/boot/grub/grub.cfg`, config smo promjenili da se učitava linux lts
+
+```
+        linux   /boot/vmlinuz-linux-lts root=UUID=ef9af0ad-7937-442e-af1e-0f71>
+        echo    'Loading initial ramdisk ...'
+        initrd  /boot/initramfs-linux-lts.img
+```
+
+U tom fileu, u linux redak možemo dodati parametre, 1 je rescue mode, 3 je no-GUI mode.
