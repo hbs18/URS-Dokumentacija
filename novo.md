@@ -173,4 +173,4 @@ U `/boot/grub/grub.cfg`, config smo promjenili da se učitava linux lts
         initrd  /boot/initramfs-linux-lts.img
 ```
 
-U tom fileu, u linux redak možemo dodati parametre, 1 je rescue mode, 3 je no-GUI mode.
+U tom fileu, u linux redak možemo dodati parametre, 1 je rescue mode, 3 je no-GUI mode. `net.ifnames=1` mjenja način na koji se mrežna sućelja imenuju.
