@@ -86,3 +86,45 @@ WantedBy=cloud-init.target
 ```
 
 Neki su u `/usr/lib/`, neki u `/etc/`
+
+`ConditionFirstBoot=true|false` je bitno, primjerice cloud init to moze imat i moguce je da pokreće se svaki put kad se sistem boota. Ako smo promjenili neke postavke cloud init moze ih tako vratit nazad na kako su bile pa to mozemo iskljucit da to ne radi. 
+
+Možemo viditi što `.target` fileovi pokreću:
+
+```shell
+[fidit@archlinux ~]$ systemctl list-dependencies cloud-init.target
+cloud-init.target
+● ├─cloud-config.service
+● ├─cloud-final.service
+● ├─cloud-init-local.service
+● └─cloud-init.service
+```
+
+Mogu se pokretati i `init` i `final` servisi istovremeno jer `final` zna čekati za `init` bude gotov.
+
+Za grafičku analizu procesa:
+
+```shell
+[fidit@archlinux ~]$ systemd-analyze dot
+digraph systemd {
+	"systemd-tmpfiles-setup-dev.service"->"systemd-journald.socket" [color="green"];
+	"systemd-tmpfiles-setup-dev.service"->"system.slice" [color="green"];
+	"systemd-tmpfiles-setup-dev.service"->"kmod-static-nodes.service" [color="green"];
+(...)
+```
+
+Isto možemo napraviti:
+```shell
+[fidit@archlinux ~]$ systemd-analyze plot > time.svg
+```
+
+Dohvaćanje fileova sa VMa pomoću SFTP:
+
+```shell
+korisnik@ODJ-O365-118:~$ sftp fidit@192.168.122.46
+Connected to 192.168.122.46.
+sftp> get time.svg
+Fetching /home/fidit/time.svg to time.svg
+/home/fidit/time.svg                          100%  124KB  56.8MB/s   00:00    
+sftp> 
+```
