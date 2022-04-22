@@ -118,6 +118,8 @@ Isto možemo napraviti:
 [fidit@archlinux ~]$ systemd-analyze plot > time.svg
 ```
 
+Na ovoj slici (`time.svg`) full crveno je kao + na `critical-chain`, prozirno crveno je kad je servis aktivan. 
+
 Dohvaćanje fileova sa VMa pomoću SFTP:
 
 ```shell
@@ -127,4 +129,31 @@ sftp> get time.svg
 Fetching /home/fidit/time.svg to time.svg
 /home/fidit/time.svg                          100%  124KB  56.8MB/s   00:00    
 sftp> 
+```
+
+Critical chain:
+
+```shell
+[fidit@archlinux ~]$ systemd-analyze critical-chain
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @1min 5.569s
+└─multi-user.target @1min 5.569s
+  └─sshd.service @1min 5.569s
+    └─reflector-init.service @25.864s +39.703s
+      └─network-online.target @25.855s
+        └─cloud-init.service @15.740s +10.113s
+          └─systemd-networkd-wait-online.service @12.662s +3.053s
+            └─systemd-networkd.service @12.516s +144ms
+              └─network-pre.target @12.512s
+                └─cloud-init-local.service @11.311s +1.197s
+                  └─basic.target @11.310s
+                    └─sockets.target @11.309s
+                      └─dbus.socket @11.308s
+                        └─sysinit.target @11.307s
+                          └─systemd-update-done.service @11.300s +6ms
+                            └─ldconfig.service @1.808s +9.491s
+                              └─local-fs.target @1.806s
+                                └─local-fs-pre.target @1.806s
 ```
