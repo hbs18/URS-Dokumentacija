@@ -157,3 +157,7 @@ graphical.target @1min 5.569s
                               └─local-fs.target @1.806s
                                 └─local-fs-pre.target @1.806s
 ```
+
+
+### Jezgra OS-a
+
