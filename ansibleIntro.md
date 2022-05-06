@@ -132,5 +132,16 @@ http         744  0.0  0.4 754168  4028 ?        Sl   14:24   0:00 /usr/bin/http
 root         833  0.0  0.2   6672  2680 pts/0    S+   14:28   0:00 grep httpd
 ```
 
+Na Arch Linuxu, Apache servira dokumente iz `/srv/http`.
+
+Dodali smo u playbook:
+
+```yaml
+  - name: Download index.html from group.miletic.net
+    ansible.builtin.command:
+      cmd: curl -o /srv/http/index.html https://group.miletic.net/index.html
+      ```
+
+
 
 
