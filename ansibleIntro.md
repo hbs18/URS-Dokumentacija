@@ -140,10 +140,118 @@ Dodali smo u playbook:
   - name: Download index.html from group.miletic.net
     ansible.builtin.command:
       cmd: curl -o /srv/http/index.html https://group.miletic.net/index.html
-      ```
+```
 
+Da proradi php interpreter:
 
+```shell 
+[root@archlinux ~]# nano php-fpm.conf
+[root@archlinux ~]# cat php-fpm.conf 
+DirectoryIndex index.php index.html
+<FilesMatch \.php$>
+    SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"
+</FilesMatch>
+```
 
+[root@archlinux ~]# cat ansible-playbook.yml 
+```yaml
+---
+- name: Update web servers
+  hosts: lokalna
+  become: yes
+  remote_user: root
+
+  tasks:
+  - name: Ensure apache is at the latest version
+    ansible.builtin.pacman:
+      name: apache
+      state: latest
+  - name: Ensure apache is started
+    ansible.builtin.service:
+      name: httpd
+      state: started
+  - name: Download index.html from group.miletic.net
+    ansible.builtin.command:
+      cmd: curl -o /srv/http/index.html https://group.miletic.net/index.html
+  - name: https://www.miletic.net/index.txt
+    ansible.builtin.command:
+      cmd: curl -o /srv/http/index.php https://www.miletic.net/index.txt
+  - name: Ensure php is installed
+    ansible.builtin.pacman:
+      name: php-fpm
+      state: latest
+  - name: Ensure php is running
+    ansible.builtin.service:
+      name: php-fpm
+      state: started
+  - name : Amend apache config for proxy
+    ansible.builtin.command:
+      cmd: echo "LoadModule proxy_module modules/mod_proxy.so" >> /etc/httpd/conf/httpd.conf
+  - name : Amend apache config 2
+    ansible.builtin.command:
+      cmd: echo "LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so" >> /etc/httpd/conf/httpd.conf
+  - name: Amend config 3
+    ansible.builtin.command:
+      cmd: echo "Include conf/extra/php-fpm.conf" >> /etc/httpd/conf/httpd.conf
+  - name : Copy php fpm conf
+    ansible.builtin.copy:
+      src: ./php-fpm.conf
+      dest: /etc/httpd/conf/extra/php-fpm.conf
+  - name : Restart service 
+    ansible.buildin.service:
+      name: httpd
+      state: restarted
+```
+
+Ovo sa echom ne radi, womp womp.
+
+Ovo radi:
+
+```yaml
+---
+- name: Update web servers
+  hosts: lokalna
+  become: yes
+  remote_user: root
+
+  tasks:
+  - name: Ensure apache is at the latest version
+    ansible.builtin.pacman:
+      name: apache
+      state: latest
+  - name: Ensure apache is started
+    ansible.builtin.service:
+      name: httpd
+      state: started
+  - name: Download index.html from group.miletic.net
+    ansible.builtin.command:
+      cmd: curl -o /srv/http/index.html https://group.miletic.net/index.html
+  - name: https://www.miletic.net/index.txt
+    ansible.builtin.command:
+      cmd: curl -o /srv/http/index.php https://www.miletic.net/index.txt
+  - name: Ensure php is installed
+    ansible.builtin.pacman:
+      name: php-fpm
+      state: latest
+  - name: Ensure php is running
+    ansible.builtin.service:
+      name: php-fpm
+      state: started
+  - name : Copy conf file
+    ansible.builtin.copy:
+      src: ./httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+  - name : Copy php fpm conf
+    ansible.builtin.copy:
+      src: ./php-fpm.conf
+      dest: /etc/httpd/conf/extra/php-fpm.conf
+  - name : Restart service 
+    ansible.builtin.service:
+      name: httpd
+      state: restarted
+```
+
+Treba editirani config stavit u mjesto di se izvodi skripta i onda se kopira. 
 
 
 
