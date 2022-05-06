@@ -121,3 +121,16 @@ localhost                  : ok=3    changed=2    unreachable=0    failed=0    s
 
 *Važno:* Ako ne pokrećemo playbook kao root, moramo dodati u playbook `become: yes`.
 
+Možemo se uvjeriti da apache radi:
+
+```shell
+[root@archlinux ~]# ps aux | grep httpd
+root         737  0.0  0.6   8588  6392 ?        Ss   14:24   0:00 /usr/bin/httpd -k start -DFOREGROUND
+http         742  0.0  0.4 754168  4028 ?        Sl   14:24   0:00 /usr/bin/httpd -k start -DFOREGROUND
+http         743  0.0  0.4 754168  4028 ?        Sl   14:24   0:00 /usr/bin/httpd -k start -DFOREGROUND
+http         744  0.0  0.4 754168  4028 ?        Sl   14:24   0:00 /usr/bin/httpd -k start -DFOREGROUND
+root         833  0.0  0.2   6672  2680 pts/0    S+   14:28   0:00 grep httpd
+```
+
+
+
