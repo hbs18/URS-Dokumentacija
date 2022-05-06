@@ -41,7 +41,7 @@ Napravili smo ansible playbook gdje instaliramo apache i osiguramo da servis rad
 [root@archlinux ~]# nano ansible-playbook.yml 
 ```
 
-```shell
+```yaml
 ---
 - name: Update web servers
   hosts: lokalna
@@ -141,6 +141,8 @@ Dodali smo u playbook:
     ansible.builtin.command:
       cmd: curl -o /srv/http/index.html https://group.miletic.net/index.html
       ```
+
+
 
 
 
